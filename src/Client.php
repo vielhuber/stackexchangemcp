@@ -44,9 +44,9 @@ final class Client
      */
     public function request(
         string $method,
-        string $path,
+        #[\SensitiveParameter] string $path,
         string $backoffMethod,
-        array $parameters = [],
+        #[\SensitiveParameter] array $parameters = [],
         ?string $site = null,
         bool $authenticated = false,
         bool $write = false
@@ -168,8 +168,12 @@ final class Client
      *
      * @return array<mixed>
      */
-    private function send(string $method, string $url, ?string $body, bool $write): array
-    {
+    private function send(
+        string $method,
+        #[\SensitiveParameter] string $url,
+        #[\SensitiveParameter] ?string $body,
+        bool $write
+    ): array {
         $handle = curl_init($url);
         curl_setopt_array($handle, [
             CURLOPT_CUSTOMREQUEST => $method,
