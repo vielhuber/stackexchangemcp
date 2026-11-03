@@ -1,0 +1,26 @@
+<?php
+declare(strict_types=1);
+
+namespace vielhuber\stackexchangemcp;
+
+use vielhuber\simplemcp\Attributes\McpTool;
+use vielhuber\simplemcp\Attributes\Schema;
+
+final class stackexchangemcp
+{
+    private readonly Client $client;
+
+    /**
+     * Select any API-supported main or Meta site without changing the tool surface.
+     */
+    public function __construct(
+        #[\SensitiveParameter] ?string $apiKey = null,
+        #[\SensitiveParameter] ?string $accessToken = null,
+        ?string $site = null
+    ) {
+        $this->client = new Client(
+            apiKey: $apiKey ?? (getenv('STACKEXCHANGE_API_KEY') ?: $_ENV['STACKEXCHANGE_API_KEY'] ?? ''),
+            accessToken: $accessToken ?? (getenv('STACKEXCHANGE_ACCESS_TOKEN') ?: $_ENV['STACKEXCHANGE_ACCESS_TOKEN'] ?? ''),
+            defaultSite: $site ?? (getenv('STACKEXCHANGE_SITE') ?: $_ENV['STACKEXCHANGE_SITE'] ?? 'stackoverflow')
+        );
+    }

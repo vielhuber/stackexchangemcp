@@ -1,0 +1,23 @@
+{
+    "name": "vielhuber/stackexchangemcp",
+    "description": "Minimal PHP helper and MCP server for the official StackExchange API.",
+    "license": "MIT",
+    "require": {
+        "php": "^8.5",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "vielhuber/simplemcp": "^1.1.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "vielhuber\\stackexchangemcp\\": "src/"
+        }
+    },
+    "bin": [
+        "src/mcp-server.php"
+    ],
+    "scripts": {
+        "lint": "find src -name '*.php' -print0 | xargs -0 -n1 php -l",
+        "generate": "python3 tools/generate.py && npm run format"
+    }
+}
