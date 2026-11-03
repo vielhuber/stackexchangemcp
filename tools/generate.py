@@ -24,17 +24,14 @@ for endpoint in catalog:
     arguments=[]
     path=literal(endpoint['path'])
     for field in re.findall(r'\{([^}]+)\}',endpoint['path']):
-        if field=='accessTokens' and package=='stackexchangemcp':
-            replacement='$this->client->encodedAccessToken()'
-        else:
-            variable=camel(field)
-            parameter_type=endpoint.get('pathTypes',{}).get(field,'string')
-            arguments.append(f'{parameter_type} ${variable}')
-            value=f'(string) ${variable}' if parameter_type=='int' else f'${variable}'
-            if package=='chessmcp' and field=='username': value=f'strtolower(${variable})'
-            if package=='chessmcp' and field in ['country','title']: value=f'strtoupper(${variable})'
-            if package=='chessmcp' and field=='month': value=f'sprintf("%02d", ${variable})'
-            replacement=f'$this->client->segment({value})'
+        variable=camel(field)
+        parameter_type=endpoint.get('pathTypes',{}).get(field,'string')
+        arguments.append(f'{parameter_type} ${variable}')
+        value=f'(string) ${variable}' if parameter_type=='int' else f'${variable}'
+        if package=='chessmcp' and field=='username': value=f'strtolower(${variable})'
+        if package=='chessmcp' and field in ['country','title']: value=f'strtoupper(${variable})'
+        if package=='chessmcp' and field=='month': value=f'sprintf("%02d", ${variable})'
+        replacement=f'$this->client->segment({value})'
         path=path.replace('{'+field+'}',"' . "+replacement+" . '")
     path=path.replace(" . ''",'')
     if endpoint.get('site'):

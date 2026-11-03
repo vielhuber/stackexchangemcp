@@ -26,17 +26,6 @@ final class Client
     }
 
     /**
-     * Restrict token-management endpoints to the configured account token.
-     */
-    public function encodedAccessToken(): string
-    {
-        if ($this->accessToken === '') {
-            throw StackExchangeException::failed('Configure STACKEXCHANGE_ACCESS_TOKEN.');
-        }
-        return rawurlencode($this->accessToken);
-    }
-
-    /**
      * Preserve API envelopes while honoring backoff and avoiding write retries.
      *
      * @param array<string, mixed> $parameters
